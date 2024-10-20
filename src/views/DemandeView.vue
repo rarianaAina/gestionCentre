@@ -2,22 +2,29 @@
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 import { useUserStore } from "@/stores/userStore";
-import { reactive, ref } from "vue";
+import { reactive, ref, onMounted } from "vue";
+
+const uri = `${import.meta.env.VITE_API_URL}/demandes`;
 
 const userStore = useUserStore();
 console.log(userStore.role);
 
+const etatMap = {
+  "-1": "Rejeté",
+  0: "En cours",
+  1: "En cours",
+  2: "En cours",
+  3: "En cours",
+  4: "Validé",
+};
+
+// Function to get the status based on `etat`
+function getEtatStatus(etat) {
+  return etatMap[etat] || "Unknown"; // Fallback if `etat` is not found
+}
+
 const items = reactive({
-  list: [
-    { rubrique: "Item 1", quantite: 10, raison: "Reason 1", etat: "Available" },
-    {
-      rubrique: "Item 2",
-      quantite: 5,
-      raison: "Reason 2",
-      etat: "Out of Stock",
-    },
-    { rubrique: "Item 3", quantite: 20, raison: "Reason 3", etat: "Available" },
-  ],
+  list: [],
 });
 
 const initialForm = {
@@ -53,6 +60,27 @@ const openModal = () => {
 const closeModal = () => {
   isModalOpen.value = false; // Close the modal
 };
+
+async function fetchDemande() {
+  try {
+    const response = await fetch(uri);
+
+    if (!response.ok) {
+      console.log(response);
+      throw new Error("failed");
+    }
+
+    const data = await response.json();
+    items.list = data;
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+}
+
+onMounted(async () => {
+  await fetchDemande();
+});
 </script>
 <template>
   <div class="container m-auto max-w-4xl overflow-x-auto mt-8">
@@ -70,10 +98,12 @@ const closeModal = () => {
       </thead>
       <tbody>
         <tr v-for="(item, index) in items.list" :key="index">
-          <td class="border border-gray-300 px-4 py-2">{{ item.rubrique }}</td>
-          <td class="border border-gray-300 px-4 py-2">{{ item.quantite }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ item.rubriques }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ item.qte }}</td>
           <td class="border border-gray-300 px-4 py-2">{{ item.raison }}</td>
-          <td class="border border-gray-300 px-4 py-2">{{ item.etat }}</td>
+          <td class="border border-gray-300 px-4 py-2">
+            {{ getEtatStatus(item.etat) }}
+          </td>
         </tr>
       </tbody>
     </table>

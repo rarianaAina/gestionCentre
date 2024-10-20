@@ -31,6 +31,7 @@ const handleSubmit = async () => {
         username: person.user,
         password: person.password,
       }),
+      redirect: "follow",
     });
 
     if (!response.ok) {
