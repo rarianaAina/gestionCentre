@@ -2,6 +2,11 @@
 import { reactive } from "vue";
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/userStore";
+
+const router = useRouter();
+const userStore = useUserStore();
 
 const form = reactive({
   user: "",
@@ -13,8 +18,10 @@ const handleSubmit = () => {
     user: form.user,
     password: form.password,
   };
-
   console.log(person);
+  const userRole = "admin";
+  userStore.login(userRole);
+  router.push("/demande");
 };
 </script>
 

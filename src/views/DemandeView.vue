@@ -1,7 +1,12 @@
 <script setup>
 import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
+import { useUserStore } from "@/stores/userStore";
 import { reactive, ref } from "vue";
+
+const userStore = useUserStore();
+console.log(userStore.role);
+
 const items = reactive({
   list: [
     { rubrique: "Item 1", quantite: 10, raison: "Reason 1", etat: "Available" },
