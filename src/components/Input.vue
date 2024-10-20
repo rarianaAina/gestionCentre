@@ -13,7 +13,7 @@ const props = defineProps({
     default: "text", // Default to text
     validator: (value) => {
       // Ensure the type is either 'text' or 'password'
-      return value === "text" || value === "password";
+      return value === "text" || value === "password" || "number";
     },
   },
   placeholder: {
