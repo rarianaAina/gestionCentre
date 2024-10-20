@@ -1,34 +1,43 @@
+<script setup>
+import { reactive } from "vue";
+import Button from "@/components/Button.vue";
+import Input from "@/components/Input.vue";
+
+const form = reactive({
+  user: "",
+  password: "",
+});
+
+const handleSubmit = () => {
+  const person = {
+    user: form.user,
+    password: form.password,
+  };
+
+  console.log(person);
+};
+</script>
+
 <template>
-  <div class="mb-4">
-    <label class="block text-gray-700 font-bold mb-2">
-      Nom d'utilisateur
-    </label>
-    <input
-      type="text"
-      id="location"
-      name="location"
-      class="border rounded w-full py-2 px-3 mb-2"
-      placeholder="Rariana beaugosse"
-      required
-    />
-  </div>
-  <div class="mb-4">
-    <label class="block text-gray-700 font-bold mb-2"> Mot de passe </label>
-    <input
-      type="text"
-      id="location"
-      name="location"
-      class="border rounded w-full py-2 px-3 mb-2"
-      placeholder="Password"
-      required
-    />
-  </div>
-  <div>
-    <button
-      class="bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-lg w-full focus:outline-none focus:shadow-outline"
-      type="submit"
-    >
-      Se connecter
-    </button>
+  <div class="container m-auto max-w-2xl p-8">
+    <div class="mb-4">
+      <Input
+        label="Utilisateur"
+        type="text"
+        placeholder="Entrer le nom"
+        v-model="form.user"
+      />
+    </div>
+    <div class="mb-4">
+      <Input
+        label="Password"
+        type="password"
+        placeholder="Entre le mot de passe"
+        v-model="form.password"
+      />
+    </div>
+    <div>
+      <Button text="Se connecter" @click="handleSubmit" />
+    </div>
   </div>
 </template>
