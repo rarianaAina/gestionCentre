@@ -5,6 +5,8 @@ import Input from "@/components/Input.vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/userStore";
 
+const uri = `${import.meta.env.VITE_API_URL}/auth/login`;
+
 const router = useRouter();
 const userStore = useUserStore();
 
@@ -13,15 +15,36 @@ const form = reactive({
   password: "",
 });
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
   const person = {
     user: form.user,
     password: form.password,
   };
-  console.log(person);
-  const userRole = "admin";
-  userStore.login(userRole);
-  router.push("/demande");
+
+  try {
+    const response = await fetch(uri, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: person.user,
+        password: person.password,
+      }),
+    });
+
+    if (!response.ok) {
+      console.log(response);
+      throw new Error("Login failed");
+    }
+
+    const data = await response.json();
+    userStore.login(data.role);
+    router.push("/demande");
+  } catch (error) {
+    console.log(error);
+    return;
+  }
 };
 </script>
 
