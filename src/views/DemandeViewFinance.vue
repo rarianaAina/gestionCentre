@@ -59,6 +59,14 @@ const fetchDemandes = async () => {
     console.error("Erreur:", error.message);
   }
 };
+
+// const handleValidate = async (idDemande) => {
+//   await handleAction(idDemande, false); // false pour valider
+// };
+
+// const handleRefuse = async (idDemande) => {
+//   await handleAction(idDemande, true); // true pour refuser
+// };
 const showQuestionnaireRefuser = async (idDemande, isRefuser, isValider) => {
   // Questions du questionnaire
   const questions = [
@@ -83,7 +91,7 @@ const showQuestionnaire = async (idDemande, isRefuser, isValider) => {
     "Question 1 : L'achat est-il conforme aux politiques d'achat de l'entreprise ?",
     "Question 2 : Avez-vous évalué plusieurs fournisseurs pour obtenir la meilleure offre ?",
     "Question 3 : Le produit ou service est-il nécessaire pour l'opération actuelle de l'entreprise ?",
-    // "Question 4 : Quels sont les coûts supplémentaires associés à cet achat (ex. : maintenance, formation, transport) ?",
+    "Question 4 : Pouvons nous assurer les coût de cet achat ?",
   ];
 
   // Stockage des réponses
@@ -255,17 +263,11 @@ const handleLogout = () => {
         <Button text="Se déconnecter" @click="handleLogout" />
       </div>
       <div class="max-w-sm mb-8 w-1/2">
-        <Button text="Faire une demande de proformat" @click="openProfModal" />
-      </div>
-      <div class="max-w-sm mb-8 w-1/2">
         <Button text="Checker stock" @click="$router.push('/stock')" />
       </div>
-      <div class="max-w-sm mb-8 w-1/2">
-        <Button text="Mes demandes proformat" @click="openModal" />
-      </div>
-      <div class="max-w-sm mb-8 w-1/2">
+      <!-- <div class="max-w-sm mb-8 w-1/2">
         <Button text="Demandes validées" @click="openModal" />
-      </div>
+      </div> -->
     </div>
 
     <table class="min-w-full border border-gray-300">
@@ -276,19 +278,12 @@ const handleLogout = () => {
           <th class="border border-gray-300 px-4 py-2">Quantité</th>
           <th class="border border-gray-300 px-4 py-2">Raison</th>
           <th class="border border-gray-300 px-4 py-2">État</th>
-          <th class="border border-gray-300 px-4 py-2">V</th>
-          <th class="border border-gray-300 px-4 py-2">R</th>
+          <th class="border border-gray-300 px-4 py-2">Valider</th>
+          <th class="border border-gray-300 px-4 py-2">Refuser</th>
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="(item, index) in items.list"
-          :key="index"
-          :class="{
-            'bg-green-100': item.etat === '4',
-            'bg-white': item.etat !== '4',
-          }"
-        >
+        <tr v-for="(item, index) in items.list" :key="index">
           <td class="border border-gray-300 px-4 py-2">
             {{ item.nomDepartement }}
           </td>
@@ -298,14 +293,18 @@ const handleLogout = () => {
           <td class="border border-gray-300 px-4 py-2">
             {{ mapEtatToText(item.etat) }}
           </td>
-          <td v-if="item.etat !== '4' && item.etat !== '-1' && item.etat !== '1'" >
+          <td
+            v-if="item.etat == '2'"
+          >
             <Button
               text="Valider"
               @click="showQuestionnaire(item.idDemande, false, true)"
               class="px-2 py-1 text-sm"
             />
           </td>
-          <td v-if="item.etat !== '4' && item.etat !== '-1' && item.etat !== '1'">
+          <td
+            v-if="item.etat == '2'"
+          >
             <Button
               text="Refuser"
               @click="showQuestionnaireRefuser(item.idDemande, true, false)"

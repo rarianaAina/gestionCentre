@@ -5,7 +5,8 @@ import Input from "@/components/Input.vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/userStore";
 
-const uri = `${import.meta.env.VITE_API_URL}/auth/login`;
+const uri = `${import.meta.env.VITE_API_URL}/api/auth/login`;
+console.log(uri)
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -31,6 +32,7 @@ const handleSubmit = async () => {
         username: person.user,
         password: person.password,
       }),
+      credentials: 'include' // Inclut les cookies de session
     });
 
     if (!response.ok) {
@@ -39,13 +41,23 @@ const handleSubmit = async () => {
     }
 
     const data = await response.json();
-    userStore.login(data.role);
-    router.push("/demande");
+    userStore.login(data.role); // Connexion de l'utilisateur avec son rôle
+
+    // Vérifie le rôle et redirige vers la route appropriée
+    if (data.role === 'Chef_de_dep') {
+      router.push("/demande");
+    } else if (data.role === 'employee') {
+      router.push("/demandeEmployee");
+    } else if(data.role === 'finance'){
+      router.push("/demandeFinance"); // Valeur par défaut ou autre rôle
+    }
   } catch (error) {
     console.log(error);
     return;
   }
 };
+
+
 </script>
 
 <template>

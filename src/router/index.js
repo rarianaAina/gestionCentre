@@ -7,10 +7,28 @@ import BonDeCommandeView from "../views/BonDeCommandeView.vue";
 import BonDeReceptionView from "../views/BonDeReceptionView.vue";
 import BonDeLivraisonView from "../views/BonDeLivraisonView.vue";
 import BonDeSortieView from "../views/BonDeSortieView.vue";
+import StockView from "@/views/StockView.vue";
+import DemandeViewEmployee from "@/views/DemandeViewEmployee.vue";
+import DemandeViewFinance from "@/views/DemandeViewFinance.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: "/demandeFinance",
+      name: "demandeFinance",
+      component: DemandeViewFinance,
+    },
+    {
+      path: "/demandeEmployee",
+      name: "demandeEmployee",
+      component: DemandeViewEmployee,
+    },
+    {
+      path: "/stock",
+      name: "stock",
+      component: StockView,
+    },
     {
       path: "/",
       name: "home",
