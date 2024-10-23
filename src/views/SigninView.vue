@@ -44,12 +44,14 @@ const handleSubmit = async () => {
     userStore.login(data.role); // Connexion de l'utilisateur avec son rôle
 
     // Vérifie le rôle et redirige vers la route appropriée
-    if (data.role === 'Chef_de_dep') {
+    if (data.role === 'dep_achat') {
       router.push("/demande");
     } else if (data.role === 'employee') {
       router.push("/demandeEmployee");
     } else if(data.role === 'finance'){
       router.push("/demandeFinance"); // Valeur par défaut ou autre rôle
+    } else if(data.role === 'Chef_de_dep') {
+      router.push('/demandeChefDep');
     }
   } catch (error) {
     console.log(error);

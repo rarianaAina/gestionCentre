@@ -59,32 +59,27 @@ const fetchDemandes = async () => {
     console.error("Erreur:", error.message);
   }
 };
-const showQuestionnaireRefuser = async (idDemande, isRefuser, isValider) => {
-  // Questions du questionnaire
-  const questions = [
-    "Question 1 : Êtes vous sûr(e) de vouloir annuler ?",
-    "Question 2 : Avez-vous évalué plusieurs fournisseurs pour obtenir la meilleure offre ?",
-    "Question 3 : Avez vous informé le demandeur ?",
-    // "Question 4 : Quels sont les coûts supplémentaires associés à cet achat (ex. : maintenance, formation, transport) ?",
-  ];
 
-  // Stockage des réponses
-  const responses = [];
-
-  for (let i = 0; i < questions.length; i++) {
-    // Demande de confirmation pour chaque question
-    const response = confirm(questions[i]); // Utilisez prompt ou une autre méthode pour une interface plus riche
-    responses.push(response);
-  }
-}
 const showQuestionnaire = async (idDemande, isRefuser, isValider) => {
-  // Questions du questionnaire
-  const questions = [
-    "Question 1 : L'achat est-il conforme aux politiques d'achat de l'entreprise ?",
-    "Question 2 : Avez-vous évalué plusieurs fournisseurs pour obtenir la meilleure offre ?",
-    "Question 3 : Le produit ou service est-il nécessaire pour l'opération actuelle de l'entreprise ?",
-    // "Question 4 : Quels sont les coûts supplémentaires associés à cet achat (ex. : maintenance, formation, transport) ?",
-  ];
+  // Questions du questionnaire en fonction de l'action
+  let questions;
+
+  if (isRefuser) {
+    questions = [
+      "Question 1 : Êtes-vous sûr(e) de vouloir annuler ?",
+      "Question 2 : Avez-vous évalué plusieurs fournisseurs pour obtenir la meilleure offre ?",
+      "Question 3 : Avez-vous informé le demandeur ?",
+    ];
+  } else if (isValider) {
+    questions = [
+      "Question 1 : L'achat est-il conforme aux politiques d'achat de l'entreprise ?",
+      "Question 2 : Avez-vous évalué plusieurs fournisseurs pour obtenir la meilleure offre ?",
+      "Question 3 : Le produit ou service est-il nécessaire pour l'opération actuelle de l'entreprise ?",
+    ];
+  } else {
+    console.log("Aucune action valide spécifiée.");
+    return; // Sort de la fonction si aucune action valide
+  }
 
   // Stockage des réponses
   const responses = [];
@@ -286,7 +281,8 @@ const handleLogout = () => {
           :key="index"
           :class="{
             'bg-green-100': item.etat === '4',
-            'bg-white': item.etat !== '4',
+            'bg-red-500': item.etat === '-1',
+            'bg-white': item.etat !== '4' && item.etat !== '-1',
           }"
         >
           <td class="border border-gray-300 px-4 py-2">
@@ -298,17 +294,31 @@ const handleLogout = () => {
           <td class="border border-gray-300 px-4 py-2">
             {{ mapEtatToText(item.etat) }}
           </td>
-          <td v-if="item.etat !== '4' && item.etat !== '-1' && item.etat !== '1'" >
+          <td
+            v-if="
+              item.etat !== '4' &&
+              item.etat !== '-1' &&
+              item.etat !== '3' &&
+              item.etat !== '2'
+            "
+          >
             <Button
               text="Valider"
               @click="showQuestionnaire(item.idDemande, false, true)"
               class="px-2 py-1 text-sm"
             />
           </td>
-          <td v-if="item.etat !== '4' && item.etat !== '-1' && item.etat !== '1'">
+          <td
+            v-if="
+              item.etat !== '4' &&
+              item.etat !== '-1' &&
+              item.etat !== '3' &&
+              item.etat !== '2'
+            "
+          >
             <Button
               text="Refuser"
-              @click="showQuestionnaireRefuser(item.idDemande, true, false)"
+              @click="showQuestionnaire(item.idDemande, true, false)"
               class="px-2 py-1 text-sm"
             />
           </td>

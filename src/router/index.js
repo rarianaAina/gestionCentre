@@ -10,10 +10,16 @@ import BonDeSortieView from "../views/BonDeSortieView.vue";
 import StockView from "@/views/StockView.vue";
 import DemandeViewEmployee from "@/views/DemandeViewEmployee.vue";
 import DemandeViewFinance from "@/views/DemandeViewFinance.vue";
+import DemandeViewChefDep from "@/views/DemandeViewChefDep.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: "/demandeChefDep",
+      name: "demandeChefDep",
+      component: DemandeViewChefDep,
+    },
     {
       path: "/demandeFinance",
       name: "demandeFinance",

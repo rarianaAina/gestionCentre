@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, onMounted } from "vue";
+import { reactive, computed, onMounted } from "vue";
 import Button from "@/components/Button.vue";
 import { useUserStore } from "@/stores/userStore";
 
@@ -10,6 +10,7 @@ console.log(userStore.role);
 // Déclaration de stocks comme une variable réactive
 const stock = reactive({
   list: [],
+  searchTerm: '', // Ajout d'un champ pour la recherche
 });
 
 // Fonction pour récupérer les stocks via l'API
@@ -30,6 +31,14 @@ const fetchStocks = async () => {
 onMounted(() => {
   fetchStocks();
 });
+
+// Computed property pour filtrer les stocks en fonction du terme de recherche
+const filteredStocks = computed(() => {
+  return stock.list.filter(item => 
+    item.NOM_PRODUIT.toLowerCase().includes(stock.searchTerm.toLowerCase()) ||
+    item.DESCRIPTION.toLowerCase().includes(stock.searchTerm.toLowerCase())
+  );
+});
 </script>
 
 <template>
@@ -37,6 +46,16 @@ onMounted(() => {
     <h1 class="text-center mb-4">Liste des stocks</h1>
     <Button text="Mes Demandes" @click="$router.push('/demande')" />
     
+    <!-- Champ de recherche -->
+    <div class="mb-3">
+      <input 
+        type="text" 
+        v-model="stock.searchTerm" 
+        placeholder="Rechercher un produit..." 
+        class="form-control" 
+      />
+    </div>
+
     <table class="table table-striped">
       <thead class="thead-dark">
         <tr>
@@ -46,11 +65,11 @@ onMounted(() => {
         </tr>
       </thead>
       <tbody>
-        <!-- Boucle sur la liste des stocks -->
-        <tr v-for="(item, index) in stock.list" :key="index">
+        <!-- Boucle sur la liste des stocks filtrée -->
+        <tr v-for="(item, index) in filteredStocks" :key="index">
           <td>{{ item.NOM_PRODUIT }}</td>
-          <td>{{ item.QTE }}</td>
           <td>{{ item.DESCRIPTION }}</td>
+          <td>{{ item.QTE }}</td>
         </tr>
       </tbody>
     </table>
