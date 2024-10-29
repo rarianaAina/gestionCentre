@@ -7,15 +7,11 @@ import { useRouter } from "vue-router";
 
 const userStore = useUserStore();
 const router = useRouter();
-// Vérifier si l'utilisateur est authentifié
 if (!userStore.isAuthenticated) {
-  // Rediriger ou afficher un message d'erreur
   console.error("Utilisateur non authentifié !");
-  // Exemple de redirection vers la page de connexion (si une route est définie)
   router.push("/signin");
 }
 
-// Réactive liste des items récupérés via l'API
 const items = reactive({
   list: [],
 });
@@ -31,16 +27,13 @@ const removeDemande = (index) => {
 };
 
 const submitProformatRequests = async () => {
-  // Logique pour soumettre les demandes de proformat
   console.log("Demande de proformat soumise:", demandes.value);
-  // Effectuer l'appel API pour soumettre les demandes
 };
-// Déclaration de departments comme une variable réactive
+
 const departments = reactive({
   list: [],
 });
 
-// Fonction pour récupérer les données depuis l'API
 const fetchDemandes = async () => {
   try {
     const role = userStore.role; // rôle de l'utilisateur
@@ -56,13 +49,11 @@ const fetchDemandes = async () => {
       throw new Error("Erreur lors de la récupération des données");
     }
     const data = await response.json();
-    items.list = data; // Assigner les données récupérées à items.list
-  } catch (error) {
+    items.list = data;   } catch (error) {
     console.error("Erreur:", error.message);
   }
 };
 const showQuestionnaire = async (idDemande, isRefuser, isValider) => {
-  // Questions du questionnaire en fonction de l'action
   let questions;
 
   if (isRefuser) {
@@ -82,19 +73,16 @@ const showQuestionnaire = async (idDemande, isRefuser, isValider) => {
     return; // Sort de la fonction si aucune action valide
   }
 
-  // Stockage des réponses
   const responses = [];
 
+  // Utilisez prompt ou une autre méthode pour une interface plus riche
   for (let i = 0; i < questions.length; i++) {
-    // Demande de confirmation pour chaque question
-    const response = confirm(questions[i]); // Utilisez prompt ou une autre méthode pour une interface plus riche
+    const response = confirm(questions[i]);
     responses.push(response);
   }
 
-  // Vérifiez les réponses
   const allConfirmed = responses.every((response) => response === true);
   if (allConfirmed) {
-    // Si toutes les questions sont confirmées, appelez handleAction
     await handleAction(idDemande, isRefuser, isValider);
   } else {
     console.log("Action annulée par l'utilisateur.");
@@ -102,7 +90,7 @@ const showQuestionnaire = async (idDemande, isRefuser, isValider) => {
 };
 
 const handleAction = async (idDemande, isRefuser, isValider) => {
-  const action = { idDemande, isRefuser, isValider, role: userStore.role }; // Ajout du role
+  const action = { idDemande, isRefuser, isValider, role: userStore.role }; 
   console.log("Action envoyée:", action);
   try {
     const response = await fetch(
@@ -112,7 +100,7 @@ const handleAction = async (idDemande, isRefuser, isValider) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify([action]), // Envoyer en tant que tableau d'action
+        body: JSON.stringify([action]),
       }
     );
 
@@ -122,13 +110,13 @@ const handleAction = async (idDemande, isRefuser, isValider) => {
 
     const result = await response.json();
     console.log(result.message);
-    fetchDemandes(); // Recharger les demandes après traitement
+    fetchDemandes();
   } catch (error) {
     console.error("Erreur:", error.message);
   }
 };
 
-// Fonction pour récupérer les départements depuis l'API
+
 const fetchDepartments = async () => {
   try {
     const response = await fetch(
@@ -138,13 +126,11 @@ const fetchDepartments = async () => {
       throw new Error("Erreur lors de la récupération des départements");
     }
     const data = await response.json();
-    departments.list = data; // Assigner les données récupérées à departments.list
-  } catch (error) {
+    departments.list = data;   } catch (error) {
     console.error("Erreur:", error.message);
   }
 };
 
-// Récupérer les données lorsque le composant est monté
 onMounted(() => {
   fetchDemandes();
   fetchDepartments();
@@ -165,14 +151,14 @@ const handleSubmit = async () => {
   const newDemand = {
     demandes: [
       {
-        idEmployee: userStore.idEmployee, // Utilisez idEmployee pour la demande
+        idEmployee: userStore.idEmployee, 
         rubriques: form.rubrique,
         qte: form.quantite,
         raison: form.raison,
-        etat: "0", // Ou toute autre valeur par défaut
+        etat: "0", 
         departement: form.departement,
         role: userStore.role,
-      },
+                  },
     ],
   };
   console.log("New Demand:", newDemand);
@@ -195,10 +181,9 @@ const handleSubmit = async () => {
 
     const result = await response.json();
     console.log(result.message);
-    closeModal(); // Fermer le modal après l'ajout
-    Object.assign(form, initialForm); // Réinitialiser le formulaire
-    // Vous pouvez également recharger les demandes ici si nécessaire
-  } catch (error) {
+    closeModal(); 
+    Object.assign(form, initialForm); 
+    } catch (error) {
     console.error("Erreur:", error.message);
   }
 };
@@ -216,11 +201,11 @@ const mapEtatToText = (etat) => {
     case "4":
       return "Validée";
     default:
-      return "Inconnu"; // Pour gérer les états non définis
+      return "Inconnu"; 
   }
 };
 
-const isModalOpen = ref(false); // State to control modal visibility
+const isModalOpen = ref(false);
 const isModalProfOpen = ref(false);
 
 const openModal = () => {
@@ -232,15 +217,15 @@ const closeModal = () => {
 };
 
 const openProfModal = () => {
-  isModalProfOpen.value = true; // Open the modal
+  isModalProfOpen.value = true; 
 };
 
 const closeProfModal = () => {
-  isModalProfOpen.value = false; // Close the modal
+  isModalProfOpen.value = false; 
 };
 const handleLogout = () => {
-  userStore.logout(); // Appeler la méthode de déconnexion dans le store
-  router.push("/signin"); // Rediriger vers la page de connexion
+  userStore.logout(); 
+  router.push("/signin");
 };
 </script>
 
