@@ -38,18 +38,21 @@ const fetchDemandes = async () => {
   try {
     const role = userStore.role; // rôle de l'utilisateur
     console.log(role);
-    console.log(`${import.meta.env.VITE_API_URL}/demandes?role=${encodeURIComponent(role)}`)
+    console.log(
+      `${import.meta.env.VITE_API_URL}/demandes?role=${encodeURIComponent(role)}`,
+    );
 
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}/demandes?role=${encodeURIComponent(
-        role
-      )}`
+        role,
+      )}`,
     );
     if (!response.ok) {
       throw new Error("Erreur lors de la récupération des données");
     }
     const data = await response.json();
-    items.list = data;   } catch (error) {
+    items.list = data;
+  } catch (error) {
     console.error("Erreur:", error.message);
   }
 };
@@ -90,7 +93,7 @@ const showQuestionnaire = async (idDemande, isRefuser, isValider) => {
 };
 
 const handleAction = async (idDemande, isRefuser, isValider) => {
-  const action = { idDemande, isRefuser, isValider, role: userStore.role }; 
+  const action = { idDemande, isRefuser, isValider, role: userStore.role };
   console.log("Action envoyée:", action);
   try {
     const response = await fetch(
@@ -101,7 +104,7 @@ const handleAction = async (idDemande, isRefuser, isValider) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify([action]),
-      }
+      },
     );
 
     if (!response.ok) {
@@ -116,17 +119,17 @@ const handleAction = async (idDemande, isRefuser, isValider) => {
   }
 };
 
-
 const fetchDepartments = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/departements`
+      `${import.meta.env.VITE_API_URL}/departements`,
     );
     if (!response.ok) {
       throw new Error("Erreur lors de la récupération des départements");
     }
     const data = await response.json();
-    departments.list = data;   } catch (error) {
+    departments.list = data;
+  } catch (error) {
     console.error("Erreur:", error.message);
   }
 };
@@ -151,14 +154,14 @@ const handleSubmit = async () => {
   const newDemand = {
     demandes: [
       {
-        idEmployee: userStore.idEmployee, 
+        idEmployee: userStore.idEmployee,
         rubriques: form.rubrique,
         qte: form.quantite,
         raison: form.raison,
-        etat: "0", 
+        etat: "0",
         departement: form.departement,
         role: userStore.role,
-                  },
+      },
     ],
   };
   console.log("New Demand:", newDemand);
@@ -172,7 +175,7 @@ const handleSubmit = async () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newDemand),
-      }
+      },
     );
 
     if (!response.ok) {
@@ -181,9 +184,9 @@ const handleSubmit = async () => {
 
     const result = await response.json();
     console.log(result.message);
-    closeModal(); 
-    Object.assign(form, initialForm); 
-    } catch (error) {
+    closeModal();
+    Object.assign(form, initialForm);
+  } catch (error) {
     console.error("Erreur:", error.message);
   }
 };
@@ -201,7 +204,7 @@ const mapEtatToText = (etat) => {
     case "4":
       return "Validée";
     default:
-      return "Inconnu"; 
+      return "Inconnu";
   }
 };
 
@@ -217,15 +220,16 @@ const closeModal = () => {
 };
 
 const openProfModal = () => {
-  isModalProfOpen.value = true; 
+  isModalProfOpen.value = true;
+};
+
+const handleLogout = () => {
+  userStore.logout();
+  isModalProfOpen.value = true;
 };
 
 const closeProfModal = () => {
-  isModalProfOpen.value = false; 
-};
-const handleLogout = () => {
-  userStore.logout(); 
-  router.push("/signin");
+  isModalProfOpen.value = false;
 };
 </script>
 
