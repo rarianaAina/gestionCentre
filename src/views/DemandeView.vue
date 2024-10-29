@@ -46,7 +46,7 @@ const fetchDemandes = async () => {
     const role = userStore.role; // Remplacez cela par la logique pour obtenir le rôle de l'utilisateur
     console.log(role);
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/demandes?role=${encodeURIComponent(
+      `${import.meta.env.VITE_API_URL}/demandes?role=${encodeURIComponent(
         role
       )}`
     );
@@ -59,6 +59,7 @@ const fetchDemandes = async () => {
     console.error("Erreur:", error.message);
   }
 };
+
 const showQuestionnaireRefuser = async (idDemande, isRefuser, isValider) => {
   // Questions du questionnaire
   const questions = [
@@ -77,6 +78,7 @@ const showQuestionnaireRefuser = async (idDemande, isRefuser, isValider) => {
     responses.push(response);
   }
 }
+
 const showQuestionnaire = async (idDemande, isRefuser, isValider) => {
   // Questions du questionnaire
   const questions = [
@@ -110,7 +112,7 @@ const handleAction = async (idDemande, isRefuser, isValider) => {
   console.log("Action envoyée:", action);
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/demandes/traiter`,
+      `${import.meta.env.VITE_API_URL}/demandes/traiter`,
       {
         method: "POST",
         headers: {
@@ -136,7 +138,7 @@ const handleAction = async (idDemande, isRefuser, isValider) => {
 const fetchDepartments = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/departements`
+      `${import.meta.env.VITE_API_URL}/departements`
     );
     if (!response.ok) {
       throw new Error("Erreur lors de la récupération des départements");
@@ -183,7 +185,7 @@ const handleSubmit = async () => {
 
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/demandes/inserer`,
+      `${import.meta.env.VITE_API_URL}/demandes/inserer`,
       {
         method: "POST",
         headers: {
