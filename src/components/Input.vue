@@ -25,7 +25,7 @@ const inputType = computed(() => props.type);
 </script>
 
 <template>
-  <label class="block text-gray-700 font-bold mb-2">{{ label }}</label>
+  <label class="flex text-black font-bold mb-2">{{ label }}</label>
   <input
     :type="inputType"
     :id="label"

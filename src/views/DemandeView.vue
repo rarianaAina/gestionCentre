@@ -43,10 +43,12 @@ const departments = reactive({
 // Fonction pour récupérer les données depuis l'API
 const fetchDemandes = async () => {
   try {
-    const role = userStore.role; // Remplacez cela par la logique pour obtenir le rôle de l'utilisateur
+    const role = userStore.role; // rôle de l'utilisateur
     console.log(role);
+    console.log(`${import.meta.env.VITE_API_URL}/demandes?role=${encodeURIComponent(role)}`)
+
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/demandes?role=${encodeURIComponent(
+      `${import.meta.env.VITE_API_URL}/demandes?role=${encodeURIComponent(
         role
       )}`
     );
@@ -59,7 +61,6 @@ const fetchDemandes = async () => {
     console.error("Erreur:", error.message);
   }
 };
-
 const showQuestionnaire = async (idDemande, isRefuser, isValider) => {
   // Questions du questionnaire en fonction de l'action
   let questions;
@@ -105,7 +106,7 @@ const handleAction = async (idDemande, isRefuser, isValider) => {
   console.log("Action envoyée:", action);
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/demandes/traiter`,
+      `${import.meta.env.VITE_API_URL}/demandes/traiter`,
       {
         method: "POST",
         headers: {
@@ -131,7 +132,7 @@ const handleAction = async (idDemande, isRefuser, isValider) => {
 const fetchDepartments = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/departements`
+      `${import.meta.env.VITE_API_URL}/departements`
     );
     if (!response.ok) {
       throw new Error("Erreur lors de la récupération des départements");
@@ -178,7 +179,7 @@ const handleSubmit = async () => {
 
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/demandes/inserer`,
+      `${import.meta.env.VITE_API_URL}/demandes/inserer`,
       {
         method: "POST",
         headers: {
