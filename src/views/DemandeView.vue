@@ -43,8 +43,10 @@ const departments = reactive({
 // Fonction pour récupérer les données depuis l'API
 const fetchDemandes = async () => {
   try {
-    const role = userStore.role; // Remplacez cela par la logique pour obtenir le rôle de l'utilisateur
+    const role = userStore.role; // rôle de l'utilisateur
     console.log(role);
+    console.log(`${import.meta.env.VITE_API_URL}/demandes?role=${encodeURIComponent(role)}`)
+
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}/demandes?role=${encodeURIComponent(
         role
