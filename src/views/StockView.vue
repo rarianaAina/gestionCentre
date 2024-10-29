@@ -7,16 +7,23 @@ import { useUserStore } from "@/stores/userStore";
 const userStore = useUserStore();
 console.log(userStore.role);
 
+const routeByRole = {
+  finance: "demandeFinance",
+  Chef_de_dep: "demandeChefDep",
+  dir_ge: "demandeDir",
+  dep_achat: "demande",
+};
+
 // Déclaration de stocks comme une variable réactive
 const stock = reactive({
   list: [],
-  searchTerm: '', // Ajout d'un champ pour la recherche
+  searchTerm: "", // Ajout d'un champ pour la recherche
 });
 
 // Fonction pour récupérer les stocks via l'API
 const fetchStocks = async () => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/stocks`);
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/stocks`);
     if (!response.ok) {
       throw new Error("Erreur lors de la récupération des stocks");
     }
@@ -34,29 +41,34 @@ onMounted(() => {
 
 // Computed property pour filtrer les stocks en fonction du terme de recherche
 const filteredStocks = computed(() => {
-  return stock.list.filter(item => 
-    item.NOM_PRODUIT.toLowerCase().includes(stock.searchTerm.toLowerCase()) ||
-    item.DESCRIPTION.toLowerCase().includes(stock.searchTerm.toLowerCase())
+  return stock.list.filter(
+    (item) =>
+      item.NOM_PRODUIT.toLowerCase().includes(stock.searchTerm.toLowerCase()) ||
+      item.DESCRIPTION.toLowerCase().includes(stock.searchTerm.toLowerCase()),
   );
 });
 </script>
 
 <template>
+  <h1 class="text-4xl mb-3">Liste des stocks</h1>
+
   <div class="container mt-5">
-    <h1 class="text-center mb-4">Liste des stocks</h1>
-    <Button text="Mes Demandes" @click="$router.push('/demande')" />
-    
+    <Button
+      text="Mes demandes"
+      @click="$router.push(`/${routeByRole[userStore.role]}`)"
+    />
+
     <!-- Champ de recherche -->
     <div class="mb-3">
-      <input 
-        type="text" 
-        v-model="stock.searchTerm" 
-        placeholder="Rechercher un produit..." 
-        class="form-control" 
+      <input
+        type="text"
+        v-model="stock.searchTerm"
+        placeholder="Rechercher un produit..."
+        class="form-control"
       />
     </div>
 
-    <table class="table table-striped">
+    <table class="table table-striped bg-gray-300">
       <thead class="thead-dark">
         <tr>
           <th scope="col">Nom du produit</th>

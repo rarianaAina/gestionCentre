@@ -46,9 +46,9 @@ const fetchDemandes = async () => {
     const role = userStore.role; // Remplacez cela par la logique pour obtenir le rôle de l'utilisateur
     console.log(role);
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/demandes?role=${encodeURIComponent(
-        role
-      )}`
+      `${import.meta.env.VITE_API_URL}/demandes?role=${encodeURIComponent(
+        role,
+      )}`,
     );
     if (!response.ok) {
       throw new Error("Erreur lors de la récupération des données");
@@ -84,7 +84,7 @@ const showQuestionnaireRefuser = async (idDemande, isRefuser, isValider) => {
     const response = confirm(questions[i]); // Utilisez prompt ou une autre méthode pour une interface plus riche
     responses.push(response);
   }
-}
+};
 const showQuestionnaire = async (idDemande, isRefuser, isValider) => {
   // Questions du questionnaire
   const questions = [
@@ -125,7 +125,7 @@ const handleAction = async (idDemande, isRefuser, isValider) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify([action]), // Envoyer en tant que tableau d'action
-      }
+      },
     );
 
     if (!response.ok) {
@@ -144,7 +144,7 @@ const handleAction = async (idDemande, isRefuser, isValider) => {
 const fetchDepartments = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/departements`
+      `${import.meta.env.VITE_API_URL}/departements`,
     );
     if (!response.ok) {
       throw new Error("Erreur lors de la récupération des départements");
@@ -198,7 +198,7 @@ const handleSubmit = async () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newDemand),
-      }
+      },
     );
 
     if (!response.ok) {
@@ -257,7 +257,7 @@ const handleLogout = () => {
 </script>
 
 <template>
-  <div class="container m-auto max-w-4xl overflow-x-auto mt-8">
+  <div class="container m-auto max-w-4xl mt-8">
     <div class="flex flex-wrap justify-between">
       <div class="max-w-sm mb-8 w-1/2">
         <Button text="Se déconnecter" @click="handleLogout" />
@@ -270,8 +270,8 @@ const handleLogout = () => {
       </div> -->
     </div>
 
-    <table class="min-w-full border border-gray-300">
-      <thead>
+    <table class="table table-striped bg-gray-300 max-w-4xl overflow-x-auto">
+      <thead class="thead-dark">
         <tr class="bg-gray-200">
           <th class="border border-gray-300 px-4 py-2">Département</th>
           <th class="border border-gray-300 px-4 py-2">Rubrique</th>
@@ -293,18 +293,14 @@ const handleLogout = () => {
           <td class="border border-gray-300 px-4 py-2">
             {{ mapEtatToText(item.etat) }}
           </td>
-          <td
-            v-if="item.etat == '2'"
-          >
+          <td v-if="item.etat == '2'">
             <Button
               text="Valider"
               @click="showQuestionnaire(item.idDemande, false, true)"
               class="px-2 py-1 text-sm"
             />
           </td>
-          <td
-            v-if="item.etat == '2'"
-          >
+          <td v-if="item.etat == '2'">
             <Button
               text="Refuser"
               @click="showQuestionnaireRefuser(item.idDemande, true, false)"

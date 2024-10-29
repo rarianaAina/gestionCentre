@@ -4,9 +4,10 @@ import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/userStore";
+import Title from "@/components/Title.vue";
 
 const uri = `${import.meta.env.VITE_API_URL}/auth/login`;
-console.log(uri)
+console.log(uri);
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -32,7 +33,7 @@ const handleSubmit = async () => {
         username: person.user,
         password: person.password,
       }),
-      credentials: 'include' // Inclut les cookies de session
+      credentials: "include", // Inclut les cookies de session
     });
 
     if (!response.ok) {
@@ -44,27 +45,25 @@ const handleSubmit = async () => {
     userStore.login(data.role); // Connexion de l'utilisateur avec son rôle
 
     // Vérifie le rôle et redirige vers la route appropriée
-    if (data.role === 'dep_achat') {
+    if (data.role === "dep_achat") {
       router.push("/demande");
-    } else if (data.role === 'employee') {
+    } else if (data.role === "employee") {
       router.push("/demandeEmployee");
-    } else if(data.role === 'finance'){
+    } else if (data.role === "finance") {
       router.push("/demandeFinance"); // Valeur par défaut ou autre rôle
-    } else if(data.role === 'Chef_de_dep') {
-      router.push('/demandeChefDep');
+    } else if (data.role === "Chef_de_dep") {
+      router.push("/demandeChefDep");
     }
   } catch (error) {
     console.log(error);
     return;
   }
 };
-
-
 </script>
 
 <template>
   <div>
-    <h1 class="text-4xl mb-3">Connexion</h1>
+    <Title text="Connexion" />
   </div>
 
   <div class="container m-auto w-96 p-8">
