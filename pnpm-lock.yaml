@@ -11,12 +11,18 @@ importers:
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.47)
+      gestion_centre:
+        specifier: 'file:'
+        version: 'file:'
       pinia:
         specifier: ^2.2.4
         version: 2.2.4(vue@3.5.12)
       postcss:
         specifier: ^8.4.47
         version: 8.4.47
+      primeicons:
+        specifier: ^7.0.0
+        version: 7.0.0
       tailwindcss:
         specifier: ^3.4.14
         version: 3.4.14
@@ -501,6 +507,9 @@ packages:
   function-bind@1.1.2:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
 
+  'gestion_centre@file:':
+    resolution: {directory: '', type: directory}
+
   glob-parent@5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
     engines: {node: '>= 6'}
@@ -692,6 +701,9 @@ packages:
   postcss@8.4.47:
     resolution: {integrity: sha512-56rxCq7G/XfB4EkXq9Egn5GCqugWvDFjafDOThIdMBsI15iqPqR5r15TfSr1YPYeEI19YeaXMCbY6u88Y76GLQ==}
     engines: {node: ^10 || ^12 || >=14}
+
+  primeicons@7.0.0:
+    resolution: {integrity: sha512-jK3Et9UzwzTsd6tzl2RmwrVY/b8raJ3QZLzoDACj+oTJ0oX7L9Hy+XnVwgo4QVKlKpnP/Ur13SXV/pVh4LzaDw==}
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
@@ -1258,6 +1270,19 @@ snapshots:
 
   function-bind@1.1.2: {}
 
+  'gestion_centre@file:':
+    dependencies:
+      autoprefixer: 10.4.20(postcss@8.4.47)
+      pinia: 2.2.4(vue@3.5.12)
+      postcss: 8.4.47
+      tailwindcss: 3.4.14
+      vue: 3.5.12
+      vue-router: 4.4.5(vue@3.5.12)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - ts-node
+      - typescript
+
   glob-parent@5.1.2:
     dependencies:
       is-glob: 4.0.3
@@ -1411,6 +1436,8 @@ snapshots:
       nanoid: 3.3.7
       picocolors: 1.1.1
       source-map-js: 1.2.1
+
+  primeicons@7.0.0: {}
 
   queue-microtask@1.2.3: {}
 
