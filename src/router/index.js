@@ -11,10 +11,16 @@ import StockView from "@/views/StockView.vue";
 import DemandeViewEmployee from "@/views/DemandeViewEmployee.vue";
 import DemandeViewFinance from "@/views/DemandeViewFinance.vue";
 import DemandeViewChefDep from "@/views/DemandeViewChefDep.vue";
+import ProformatFournisseur from "@/views/ProformatFournisseur.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: "/proformatFournisseur",
+      name: "proformatFournisseur",
+      component: ProformatFournisseur,
+    },
     {
       path: "/demandeChefDep",
       name: "demandeChefDep",
