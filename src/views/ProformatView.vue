@@ -55,9 +55,11 @@ function numberToLetterMoney(amount) {
   }
 
   // Handle hundreds
-  words += convertHundreds(amount);
+  if (amount > 0) {
+    words += convertHundreds(amount);
+  }
 
-  return words.trim();
+  return words.trim() + " Ariary";
 }
 
 function convertHundreds(amount) {
@@ -89,12 +91,14 @@ function convertHundreds(amount) {
   let words = "";
 
   if (amount >= 100) {
-    words += units[Math.floor(amount / 100)] + " cent ";
+    const hundredsCount = Math.floor(amount / 100);
+    words += hundredsCount > 1 ? units[hundredsCount] + " cents " : "cent ";
     amount %= 100;
   }
 
   if (amount >= 20) {
-    words += tens[Math.floor(amount / 10)] + " ";
+    words +=
+      tens[Math.floor(amount / 10)] + (amount % 10 === 0 ? "" : "-") + " ";
     amount %= 10;
   }
 
@@ -161,7 +165,7 @@ function convertHundreds(amount) {
       >
         Arrêtée à la somme de:
         <span class="text-xl font-semibold text-gray-800">
-          {{ numberToLetterMoney(505000) }} Ariary
+          {{ numberToLetterMoney(150000) }}
         </span>
       </div>
     </div>
