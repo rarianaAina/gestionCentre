@@ -2,15 +2,15 @@
 defineProps({
   text: {
     type: String,
-    default: "Boutton", // Default button text
+    default: "Boutton",
   },
   bgColor: {
     type: String,
-    default: "transparent", // Default background color
+    default: "transparent",
   },
   hoverColor: {
     type: String,
-    default: "bg-blue-800", // Default hover color
+    default: "bg-blue-800",
   },
   icon: {
     type: String,
