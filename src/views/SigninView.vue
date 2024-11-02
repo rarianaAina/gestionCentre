@@ -58,7 +58,7 @@ const handleSubmit = async () => {
     } else if (data.role === "Chef_de_dep") {
       router.push("/demandeChefDep");
     } else if (Date.role === "fournisseur") {
-      router.push("/proformatFournisseur")
+      router.push("/proformatFournisseur");
     }
   } catch (error) {
     console.log(error);
@@ -68,32 +68,37 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div>
-    <Button text="Accueil" @click="handleSubmitAccueil" />
-  </div>
-  <div>
-    <Title text="Connexion" />
-  </div>
+  <div class="flex items-center justify-center min-h-screen bg-gray-50">
+    <!-- Form Card -->
+    <div class="w-full max-w-sm p-6 bg-white rounded-lg shadow-md">
+      <!-- Title -->
+      <div class="text-center mb-6">
+        <Title text="Connexion" class="text-2xl font-semibold text-gray-800" />
+      </div>
 
-  <div class="container m-auto w-96 p-8">
-    <div class="mb-2">
-      <Input
-        label="Utilisateur"
-        type="text"
-        placeholder="Entrer le nom"
-        v-model="form.user"
-      />
-    </div>
-    <div class="mb-2">
-      <Input
-        label="Password"
-        type="password"
-        placeholder="Entre le mot de passe"
-        v-model="form.password"
-      />
-    </div>
-    <div class="mt-4">
-      <Button text="Se connecter" @click="handleSubmit" />
+      <!-- Form Fields -->
+      <div class="space-y-2">
+        <Input
+          label="Utilisateur"
+          type="text"
+          placeholder="Entrer le nom"
+          v-model="form.user"
+          class="w-full"
+        />
+
+        <Input
+          label="Password"
+          type="password"
+          placeholder="Entrer le mot de passe"
+          v-model="form.password"
+          class="w-full"
+        />
+      </div>
+
+      <!-- Submit Button -->
+      <div class="mt-6 text-center">
+        <Button text="Se connecter" @click="handleSubmit" class="w-full" />
+      </div>
     </div>
   </div>
 </template>
