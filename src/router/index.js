@@ -59,7 +59,7 @@ const router = createRouter({
           component: StockView,
         },
         {
-          path: "proformat",
+          path: "proformat/:date",
           name: "proformat",
           component: ProformatView,
         },
