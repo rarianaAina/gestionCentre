@@ -224,8 +224,8 @@ const openProfModal = () => {
 };
 
 const handleLogout = () => {
-  userStore.logout();
-  isModalProfOpen.value = true;
+  userStore.logout(); 
+  router.push("/signin");
 };
 
 const closeProfModal = () => {

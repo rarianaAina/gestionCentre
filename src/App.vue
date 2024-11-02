@@ -2,6 +2,6 @@
 import Dashboard from "./layouts/Dashboard.vue";
 </script>
 <template>
-  <!-- <RouterView /> -->
-  <Dashboard />
+  <RouterView />
+  <!-- <Dashboard /> -->
 </template>
