@@ -21,6 +21,13 @@ const handleSubmitAccueil = async () => {
   router.push("/");
 };
 
+const roleToRouteMap = {
+  dep_achat: "/demande",
+  employee: "/demandeEmployee",
+  finance: "/demandeFinance",
+  Chef_de_dep: "/demandeChefDep",
+  fournisseur: "/proformatFournisseur",
+};
 const handleSubmit = async () => {
   const person = {
     user: form.user,
@@ -37,7 +44,7 @@ const handleSubmit = async () => {
         username: person.user,
         password: person.password,
       }),
-      credentials: "include", // Inclut les cookies de session
+      credentials: "include",
     });
 
     if (!response.ok) {
@@ -46,19 +53,16 @@ const handleSubmit = async () => {
     }
 
     const data = await response.json();
-    userStore.login(data.role); // Connexion de l'utilisateur avec son rôle
+    userStore.login(data.role);
 
-    // Vérifie le rôle et redirige vers la route appropriée
-    if (data.role === "dep_achat") {
-      router.push("/demande");
-    } else if (data.role === "employee") {
-      router.push("/demandeEmployee");
-    } else if (data.role === "finance") {
-      router.push("/demandeFinance"); // Valeur par défaut ou autre rôle
-    } else if (data.role === "Chef_de_dep") {
-      router.push("/demandeChefDep");
-    } else if (Date.role === "fournisseur") {
-      router.push("/proformatFournisseur");
+    const route = roleToRouteMap[data.role];
+
+    // Check if the role has a mapped route and navigate,
+    // or handle a default route if needed
+    if (route) {
+      router.push(route);
+    } else {
+      router.push("/defaultRoute");
     }
   } catch (error) {
     console.log(error);
@@ -83,7 +87,6 @@ const handleSubmit = async () => {
           type="text"
           placeholder="Entrer le nom"
           v-model="form.user"
-          class="w-full"
         />
 
         <Input
@@ -91,7 +94,6 @@ const handleSubmit = async () => {
           type="password"
           placeholder="Entrer le mot de passe"
           v-model="form.password"
-          class="w-full"
         />
       </div>
 
