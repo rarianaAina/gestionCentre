@@ -87,7 +87,6 @@ const handleSubmit = async () => {
           type="text"
           placeholder="Entrer le nom"
           v-model="form.user"
-          class="w-full"
         />
 
         <Input
@@ -95,7 +94,6 @@ const handleSubmit = async () => {
           type="password"
           placeholder="Entrer le mot de passe"
           v-model="form.password"
-          class="w-full"
         />
       </div>
 
