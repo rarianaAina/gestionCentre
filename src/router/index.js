@@ -13,6 +13,8 @@ import DemandeViewFinance from "@/views/DemandeViewFinance.vue";
 import DemandeViewChefDep from "@/views/DemandeViewChefDep.vue";
 import DashboardLayout from "@/layouts/Dashboard.vue";
 import ProformatFournisseur from "@/views/ProformatFournisseur.vue";
+import TsyKoboko from "@/views/DemandeProformaView.vue";
+import DemandeProformaView from "@/views/DemandeProformaView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -85,6 +87,11 @@ const router = createRouter({
           path: "/proformatFournisseur",
           name: "proformatFournisseur",
           component: ProformatFournisseur,
+        },
+        {
+          path: "demande-proforma",
+          name: "Demande ProformaView",
+          component: DemandeProformaView,
         },
       ],
     },

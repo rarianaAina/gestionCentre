@@ -251,6 +251,12 @@ const closeProfModal = () => {
       <div class="max-w-sm mb-8 w-1/2">
         <Button text="Faire une demande" @click="openModal" />
       </div>
+      <div class="max-w-sm mb-8 w-1/2">
+        <Button
+          text="Demandes proformas"
+          @click="$router.push('demande-proforma')"
+        />
+      </div>
     </div>
 
     <table class="min-w-full border border-gray-300">
