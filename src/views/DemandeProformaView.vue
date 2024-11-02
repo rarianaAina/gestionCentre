@@ -13,17 +13,13 @@ const navigateToDate = (date) => {
   <Title text="Mes proformas" />
   <Container>
     <table class="table-auto w-full">
-      <thead class="bg-gray-600 text-white">
+      <thead class="bg-blue-900 text-white">
         <tr>
           <th scope="col" class="px-4 py-2">Date</th>
           <th scope="col" class="px-4 py-2">Designation</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="bg-gray-100">
-          <Button text="Checker stock" @click="$router.push('/stock')" />
-        </tr>
-
         <tr>
           <td
             class="border px-4 py-2 cursor-pointer"

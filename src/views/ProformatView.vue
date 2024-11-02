@@ -9,41 +9,6 @@ const route = useRoute();
 const date = computed(() => route.params.date);
 
 function numberToLetterMoney(amount) {
-  const units = [
-    "",
-    "un",
-    "deux",
-    "trois",
-    "quatre",
-    "cinq",
-    "six",
-    "sept",
-    "huit",
-    "neuf",
-    "dix",
-    "onze",
-    "douze",
-    "treize",
-    "quatorze",
-    "quinze",
-    "seize",
-    "dix-sept",
-    "dix-huit",
-    "dix-neuf",
-  ];
-  const tens = [
-    "",
-    "",
-    "vingt",
-    "trente",
-    "quarante",
-    "cinquante",
-    "soixante",
-    "soixante-dix",
-    "quatre-vingt",
-    "quatre-vingt-dix",
-  ];
-
   if (amount === 0) return "zéro";
 
   let words = "";
@@ -123,8 +88,8 @@ function convertHundreds(amount) {
         </div>
       </div>
 
-      <table class="table-auto w-full bg-gray-300 mt-2">
-        <thead class="bg-gray-600 text-white">
+      <table class="table-auto w-full mt-2">
+        <thead class="bg-blue-900 text-white">
           <tr>
             <th scope="col" class="px-4 py-2">Quantité</th>
             <th scope="col" class="px-4 py-2">Designation</th>
@@ -165,7 +130,7 @@ function convertHundreds(amount) {
       >
         Arrêtée à la somme de:
         <span class="text-xl font-semibold text-gray-800">
-          {{ numberToLetterMoney(150000) }}
+          {{ numberToLetterMoney(229) }}
         </span>
       </div>
     </div>
