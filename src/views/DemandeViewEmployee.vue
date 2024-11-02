@@ -24,7 +24,7 @@ const departments = reactive({
 const fetchDemandes = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/demandes`
+      `${import.meta.env.VITE_API_URL}/demandes`
     );
     if (!response.ok) {
       throw new Error("Erreur lors de la récupération des données");
@@ -40,7 +40,7 @@ const fetchDemandes = async () => {
 const fetchDepartments = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/departements`
+      `${import.meta.env.VITE_API_URL}/departements`
     );
     if (!response.ok) {
       throw new Error("Erreur lors de la récupération des départements");
@@ -99,7 +99,7 @@ const handleSubmit = async () => {
   console.log(userStore.idEmployee);
 
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/demandes/inserer`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/demandes/inserer`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -5,7 +5,6 @@ import Input from "@/components/Input.vue";
 import { useUserStore } from "@/stores/userStore";
 import { useRouter } from "vue-router";
 
-
 const router = useRouter();
 const userStore = useUserStore();
 console.log(userStore.idEmployee);
@@ -20,33 +19,15 @@ const departments = reactive({
   list: [],
 });
 
-// Fonction pour récupérer les données depuis l'API
+//récupérer les données depuis l'API
 const fetchDemandes = async () => {
   try {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/demandes`
-    );
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/proformats`);
     if (!response.ok) {
       throw new Error("Erreur lors de la récupération des données");
     }
     const data = await response.json();
-    items.list = data; // Assigner les données récupérées à items.list
-  } catch (error) {
-    console.error("Erreur:", error.message);
-  }
-};
-
-// Fonction pour récupérer les départements depuis l'API
-const fetchDepartments = async () => {
-  try {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/api/departements`
-    );
-    if (!response.ok) {
-      throw new Error("Erreur lors de la récupération des départements");
-    }
-    const data = await response.json();
-    departments.list = data; // Assigner les données récupérées à departments.list
+    items.list = data;
   } catch (error) {
     console.error("Erreur:", error.message);
   }
@@ -55,9 +36,8 @@ const fetchDepartments = async () => {
 // Récupérer les données lorsque le composant est monté
 onMounted(() => {
   fetchDemandes();
-  fetchDepartments();
+  //fetchDepartments();
 });
-
 
 const initialForm = {
   rubrique: "",
@@ -72,13 +52,17 @@ const initialForm = {
   },
 };
 
-
 const form = reactive({
   ...initialForm,
 });
 
 const handleSubmit = async () => {
-  if (!form.questions.q1 || !form.questions.q2 || !form.questions.q3 || !form.questions.q4) {
+  if (
+    !form.questions.q1 ||
+    !form.questions.q2 ||
+    !form.questions.q3 ||
+    !form.questions.q4
+  ) {
     alert("Veuillez répondre à toutes les questions."); // Alerte si une question est manquante
     return; // Empêche la soumission
   }
@@ -89,26 +73,28 @@ const handleSubmit = async () => {
         rubriques: form.rubrique,
         qte: form.quantite,
         raison: form.raison,
-        etat: '0', // Ou toute autre valeur par défaut
-        departement: form.departement
-        
-      }
-    ]
+        etat: "0", // Ou toute autre valeur par défaut
+        departement: form.departement,
+      },
+    ],
   };
-  console.log('New Demand:', newDemand);
+  console.log("New Demand:", newDemand);
   console.log(userStore.idEmployee);
 
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/demandes/inserer`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newDemand),
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/demandes/inserer`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newDemand),
+      }
+    );
 
     if (!response.ok) {
-      throw new Error('Erreur lors de l\'insertion des demandes');
+      throw new Error("Erreur lors de l'insertion des demandes");
     }
 
     const result = await response.json();
@@ -117,7 +103,7 @@ const handleSubmit = async () => {
     Object.assign(form, initialForm); // Réinitialiser le formulaire
     // Vous pouvez également recharger les demandes ici si nécessaire
   } catch (error) {
-    console.error('Erreur:', error.message);
+    console.error("Erreur:", error.message);
   }
 };
 
@@ -150,13 +136,37 @@ const handleLogout = () => {
   userStore.logout(); // Appeler la méthode de déconnexion dans le store
   router.push("/signin"); // Rediriger vers la page de connexion
 };
-
-
-
-
 </script>
 
 <template>
+  <div class="max-w-sm mb-8 w-1/2">
+    <Button text="Se déconnecter" @click="handleLogout" />
+  </div>
+  <table class="min-w-full border border-gray-300">
+    <thead>
+      <tr class="bg-gray-200">
+        <th class="border border-gray-300 px-4 py-2">Date de la demande</th>
+        <th class="border border-gray-300 px-4 py-2">Produit</th>
+        <th class="border border-gray-300 px-4 py-2">Quantité</th>
+        <th class="border border-gray-300 px-4 py-2">Prix</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(item, index) in items.list" :key="index">
+        <td class="border border-gray-300 px-4 py-2">{{ item.dateDemande }}</td>
+        <td class="border border-gray-300 px-4 py-2">{{ item.Produit }}</td>
+        <td class="border border-gray-300 px-4 py-2">{{ item.QteDemande }}</td>
+        <td class="border border-gray-300 px-4 py-2">
+          <input type="text" placeholder="Prix" class="w-full" />
+        </td>
 
-    Test fournisseurs
+        <!-- <td class="border border-gray-300 px-4 py-2"> <input type="checkbox" id="valider" name="valider" /> </td>
+          <td class="border border-gray-300 px-4 py-2"> <input type="checkbox" id="refuser" name="refuser" /> </td> -->
+      </tr>
+    </tbody>
+  </table>
+  <div>
+    <button>Valider</button>
+  </div>
+  Test fournisseurs
 </template>

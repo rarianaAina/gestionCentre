@@ -150,6 +150,9 @@ const form = reactive({
   ...initialForm,
 });
 
+const sendDemand = async () => {
+  
+}
 const handleSubmit = async () => {
   const newDemand = {
     demandes: [
@@ -247,9 +250,6 @@ const closeProfModal = () => {
       </div>
       <div class="max-w-sm mb-8 w-1/2">
         <Button text="Mes demandes proformat" @click="openModal" />
-      </div>
-      <div class="max-w-sm mb-8 w-1/2">
-        <Button text="Demandes validées" @click="openModal" />
       </div>
     </div>
 
@@ -386,7 +386,7 @@ const closeProfModal = () => {
             <Button text="Ajouter une demande" @click="addDemande" />
           </div>
           <div class="flex justify-end mt-4">
-            <Button text="Soumettre" type="submit" />
+            <Button text="Soumettre" @click="sendDemand" />
             <Button text="Fermer" @click="closeProfModal" />
           </div>
         </form>
