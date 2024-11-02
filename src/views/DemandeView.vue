@@ -152,9 +152,6 @@ const form = reactive({
   ...initialForm,
 });
 
-const sendDemand = async () => {
-  
-}
 const handleSubmit = async () => {
   const newDemand = {
     demandes: [
