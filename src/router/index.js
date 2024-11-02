@@ -11,69 +11,76 @@ import StockView from "@/views/StockView.vue";
 import DemandeViewEmployee from "@/views/DemandeViewEmployee.vue";
 import DemandeViewFinance from "@/views/DemandeViewFinance.vue";
 import DemandeViewChefDep from "@/views/DemandeViewChefDep.vue";
+import DashboardLayout from "@/layouts/Dashboard.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: "/demandeChefDep",
-      name: "demandeChefDep",
-      component: DemandeViewChefDep,
-    },
-    {
-      path: "/demandeFinance",
-      name: "demandeFinance",
-      component: DemandeViewFinance,
-    },
-    {
-      path: "/demandeEmployee",
-      name: "demandeEmployee",
-      component: DemandeViewEmployee,
-    },
-    {
-      path: "/stock",
-      name: "stock",
-      component: StockView,
-    },
-    {
-      path: "/",
-      name: "home",
-      component: HomeView,
-    },
     {
       path: "/signin",
       name: "signin",
       component: SigninView,
     },
     {
-      path: "/demande",
-      name: "demande",
-      component: DemandeView,
-    },
-    {
-      path: "/proformat",
-      name: "proformat",
-      component: ProformatView,
-    },
-    {
-      path: "/bon-de-commande",
-      name: "bon-de-commande",
-      component: BonDeCommandeView,
-    },
-    {
-      path: "/bon-de-reception",
-      name: "bon-de-reception",
-      component: BonDeReceptionView,
-    },
-    {
-      path: "/bon-de-livraison",
-      name: "bon-de-livraison",
-      component: BonDeLivraisonView,
-    },
-    {
-      path: "/bon-de-sortie",
-      name: "bon-de-sortie",
-      component: BonDeSortieView,
+      path: "/",
+      component: DashboardLayout,
+      children: [
+        {
+          path: "",
+          name: "home",
+          component: HomeView,
+        },
+        {
+          path: "demande",
+          name: "demande",
+          component: DemandeView,
+        },
+        {
+          path: "demandeChefDep",
+          name: "demandeChefDep",
+          component: DemandeViewChefDep,
+        },
+        {
+          path: "demandeFinance",
+          name: "demandeFinance",
+          component: DemandeViewFinance,
+        },
+        {
+          path: "demandeEmployee",
+          name: "demandeEmployee",
+          component: DemandeViewEmployee,
+        },
+        {
+          path: "stock",
+          name: "stock",
+          component: StockView,
+        },
+        {
+          path: "proformat",
+          name: "proformat",
+          component: ProformatView,
+        },
+        {
+          path: "bon-de-commande",
+          name: "bon-de-commande",
+          component: BonDeCommandeView,
+        },
+        {
+          path: "bon-de-reception",
+          name: "bon-de-reception",
+          component: BonDeReceptionView,
+        },
+        {
+          path: "bon-de-livraison",
+          name: "bon-de-livraison",
+          component: BonDeLivraisonView,
+        },
+        {
+          path: "bon-de-sortie",
+          name: "bon-de-sortie",
+          component: BonDeSortieView,
+        },
+      ],
     },
   ],
 });

@@ -21,7 +21,9 @@ import Header from "./Header.vue";
         </div>
       </div>
 
-      <div class="view flex-grow bg-gray-50 p-3">Hello</div>
+      <div class="view flex-grow bg-gray-50 p-3">
+        <RouterView />
+      </div>
     </div>
   </div>
 </template>
