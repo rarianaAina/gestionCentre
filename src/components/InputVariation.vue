@@ -1,6 +1,8 @@
 <script setup>
 import { defineProps } from "vue";
 
+const model = defineModel();
+
 const props = defineProps({
   name: {
     type: String,
@@ -20,7 +22,7 @@ const props = defineProps({
 <template>
   <div class="coolinput">
     <label class="text" :for="name">{{ label }}</label>
-    <input :class="['input', type]" :name="name" :type="type" />
+    <input :class="['input', type]" :name="name" :type="type" v-model="model" />
   </div>
 </template>
 
