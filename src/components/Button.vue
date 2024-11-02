@@ -1,9 +1,10 @@
 <script setup>
 const variation = {
   normal: "bg-blue-900 hover:bg-blue-800 text-white",
-  neutral: "hover:bg-gray-300 text-black",
+  neutral: "bg-gray-100 hover:bg-gray-300 text-black",
   delete: "bg-red-600 hover:bg-red-500 text-white",
 };
+
 defineProps({
   text: {
     type: String,
