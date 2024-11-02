@@ -17,7 +17,7 @@ import Header from "./Header.vue";
           <NavButton text="Proformat" />
         </div>
         <div class="nav my-2 mt-auto">
-          <NavButton text="Deconnection" />
+          <NavButton text="Deconnexion" icon="pi pi-sign-out" />
         </div>
       </div>
 
