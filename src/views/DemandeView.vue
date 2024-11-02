@@ -18,6 +18,11 @@ const items = reactive({
   list: [],
 });
 
+const rariana = reactive({
+  rubrique: "",
+  quantite: 0,
+});
+
 const demandes = ref([{ rubrique: "", quantite: 0 }]);
 
 const addDemande = () => {
@@ -152,7 +157,15 @@ const form = reactive({
   ...initialForm,
 });
 
-const sendDemand = async () => {};
+const sendDemand = async () => {
+  const newRariana = {
+    rubrique: rariana.rubrique,
+    quantite: rariana.quantite,
+  };
+
+  console.log("mandeha io e ", newRariana);
+};
+
 const handleSubmit = async () => {
   const newDemand = {
     demandes: [
@@ -389,13 +402,13 @@ const closeProfModal = () => {
               class="flex items-center space-x-2 py-2"
             >
               <InputVariation
-                v-model="demande.rubrique"
+                v-model="rariana.rubrique"
                 name="rubrique"
                 label="Rubrique"
                 class="flex-1"
               />
               <InputVariation
-                v-model="demande.quantite"
+                v-model="rariana.quantite"
                 name="quantite"
                 label="Quantité"
                 type="number"
