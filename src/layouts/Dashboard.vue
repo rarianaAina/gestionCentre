@@ -21,7 +21,7 @@ import Header from "./Header.vue";
         </div>
       </div>
 
-      <div class="view flex-grow bg-gray-50 p-3">
+      <div class="view flex-grow bg-gray-100 p-3 overflow-y-auto">
         <RouterView />
       </div>
     </div>
@@ -31,5 +31,9 @@ import Header from "./Header.vue";
 <style scoped>
 .navigation {
   width: 18%;
+}
+
+.view {
+  height: calc(100vh - 10vh);
 }
 </style>

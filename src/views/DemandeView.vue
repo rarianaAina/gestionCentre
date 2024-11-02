@@ -4,6 +4,8 @@ import Button from "@/components/Button.vue";
 import Input from "@/components/Input.vue";
 import { useUserStore } from "@/stores/userStore";
 import { useRouter } from "vue-router";
+import IconButton from "@/components/IconButton.vue";
+import InputVariation from "@/components/InputVariation.vue";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -366,28 +368,39 @@ const closeProfModal = () => {
       class="fixed inset-0 flex justify-center items-center"
     >
       <div class="bg-white rounded-lg shadow-lg p-6">
-        <h2 class="text-xl mb-4">Demande de proformat</h2>
+        <div class="mb-2 flex space-x-3 items-center h-20">
+          <h2 class="text-xl">Demande de proformat</h2>
+          <IconButton variant="add" @click="addDemande" />
+        </div>
+
         <form @submit.prevent="submitProformatRequests">
           <div class="space-y-4">
             <div
               v-for="(demande, index) in demandes"
               :key="index"
-              class="flex space-x-2"
+              class="flex items-center space-x-2 py-2"
             >
-              <Input v-model="demande.rubrique" label="Rubrique" />
-              <Input
+              <InputVariation
+                v-model="demande.rubrique"
+                name="rubrique"
+                label="Rubrique"
+                class="flex-1"
+              />
+              <InputVariation
                 v-model="demande.quantite"
+                name="quantite"
                 label="Quantité"
                 type="number"
+                class="flex-1"
               />
-
-              <Button text="Supprimer" @click="removeDemande(index)" />
+              <div class="self-end">
+                <IconButton variant="delete" @click="removeDemande(index)" />
+              </div>
             </div>
-            <Button text="Ajouter une demande" @click="addDemande" />
           </div>
-          <div class="flex justify-end mt-4">
+          <div class="flex justify-end mt-4 space-x-5">
+            <Button text="Annuler" variant="neutral" @click="closeProfModal" />
             <Button text="Soumettre" type="submit" />
-            <Button text="Fermer" @click="closeProfModal" />
           </div>
         </form>
       </div>
