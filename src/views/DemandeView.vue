@@ -18,6 +18,11 @@ const items = reactive({
   list: [],
 });
 
+const rariana = reactive({
+  rubrique: "",
+  quantite: 0,
+});
+
 const demandes = ref([{ rubrique: "", quantite: 0 }]);
 
 const addDemande = () => {
@@ -152,6 +157,15 @@ const form = reactive({
   ...initialForm,
 });
 
+const sendDemand = async () => {
+  const newRariana = {
+    rubrique: rariana.rubrique,
+    quantite: rariana.quantite,
+  };
+
+  console.log("mandeha io e ", newRariana);
+};
+
 const handleSubmit = async () => {
   const newDemand = {
     demandes: [
@@ -226,7 +240,7 @@ const openProfModal = () => {
 };
 
 const handleLogout = () => {
-  userStore.logout(); 
+  userStore.logout();
   router.push("/signin");
 };
 
@@ -248,7 +262,13 @@ const closeProfModal = () => {
         <Button text="Checker stock" @click="$router.push('/stock')" />
       </div>
       <div class="max-w-sm mb-8 w-1/2">
-        <Button text="Mes demandes proformat" @click="openModal" />
+        <Button text="Faire une demande" @click="openModal" />
+      </div>
+      <div class="max-w-sm mb-8 w-1/2">
+        <Button
+          text="Demandes proformas"
+          @click="$router.push('demande-proforma')"
+        />
       </div>
     </div>
 
@@ -339,12 +359,16 @@ const closeProfModal = () => {
         />
 
         <!-- Menu déroulant pour le département -->
-        <label class="block mb-2">Choix de Département</label>
+        <label class="block mb-2 mt-1 text-black font-bold"
+          >Choix de Département</label
+        >
         <select
           v-model="form.departement"
-          class="border border-gray-300 p-2 w-full mb-4"
+          class="bg-white border border-gray-300 p-2 w-full mb-4"
         >
-          <option value="" disabled>Choisir un département</option>
+          <option value="" class="text-gray-50" disabled>
+            Choisir un département
+          </option>
           <option
             v-for="department in departments.list"
             :key="department.id"
@@ -378,13 +402,13 @@ const closeProfModal = () => {
               class="flex items-center space-x-2 py-2"
             >
               <InputVariation
-                v-model="demande.rubrique"
+                v-model="rariana.rubrique"
                 name="rubrique"
                 label="Rubrique"
                 class="flex-1"
               />
               <InputVariation
-                v-model="demande.quantite"
+                v-model="rariana.quantite"
                 name="quantite"
                 label="Quantité"
                 type="number"
