@@ -17,6 +17,10 @@ const form = reactive({
   password: "",
 });
 
+const handleSubmitAccueil = async () => {
+  router.push("/");
+};
+
 const handleSubmit = async () => {
   const person = {
     user: form.user,
@@ -53,6 +57,8 @@ const handleSubmit = async () => {
       router.push("/demandeFinance"); // Valeur par défaut ou autre rôle
     } else if (data.role === "Chef_de_dep") {
       router.push("/demandeChefDep");
+    } else if (Date.role === "fournisseur") {
+      router.push("/proformatFournisseur")
     }
   } catch (error) {
     console.log(error);
@@ -62,6 +68,9 @@ const handleSubmit = async () => {
 </script>
 
 <template>
+  <div>
+    <Button text="Accueil" @click="handleSubmitAccueil" />
+  </div>
   <div>
     <Title text="Connexion" />
   </div>

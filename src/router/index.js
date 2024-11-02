@@ -12,6 +12,7 @@ import DemandeViewEmployee from "@/views/DemandeViewEmployee.vue";
 import DemandeViewFinance from "@/views/DemandeViewFinance.vue";
 import DemandeViewChefDep from "@/views/DemandeViewChefDep.vue";
 import DashboardLayout from "@/layouts/Dashboard.vue";
+import ProformatFournisseur from "@/views/ProformatFournisseur.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -79,6 +80,11 @@ const router = createRouter({
           path: "bon-de-sortie",
           name: "bon-de-sortie",
           component: BonDeSortieView,
+        },
+        {
+          path: "/proformatFournisseur",
+          name: "proformatFournisseur",
+          component: ProformatFournisseur,
         },
       ],
     },
