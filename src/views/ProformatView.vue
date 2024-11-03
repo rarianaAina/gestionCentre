@@ -6,6 +6,7 @@ import Container from "@/layouts/Container.vue";
 import Button from "@/components/Button.vue";
 import { useEtatProforma } from "@/stores/etatProforma";
 import { useRouter } from "vue-router";
+import numberToLetterMoney from "@/utils/convertion";
 
 const route = useRoute();
 const proformas = ref([]); // Pour stocker les données récupérées
@@ -28,82 +29,15 @@ const fetchProformasByDate = async () => {
   }
 };
 
-// Conversion d'un montant en texte
-function numberToLetterMoney(amount) {
-  if (amount === 0) return "zéro";
-  let words = "";
-
-  // Gérer les milliers
-  if (amount >= 1000) {
-    words += convertHundreds(Math.floor(amount / 1000)) + " mille ";
-    amount %= 1000;
-  }
-
-  // Gérer les centaines
-  if (amount > 0) {
-    words += convertHundreds(amount);
-  }
-
-  return words.trim() + " Ariary";
-}
-
-function convertHundreds(amount) {
-  const units = [
-    "",
-    "un",
-    "deux",
-    "trois",
-    "quatre",
-    "cinq",
-    "six",
-    "sept",
-    "huit",
-    "neuf",
-  ];
-  const tens = [
-    "",
-    "",
-    "vingt",
-    "trente",
-    "quarante",
-    "cinquante",
-    "soixante",
-    "soixante-dix",
-    "quatre-vingt",
-    "quatre-vingt-dix",
-  ];
-
-  let words = "";
-
-  if (amount >= 100) {
-    const hundredsCount = Math.floor(amount / 100);
-    words += hundredsCount > 1 ? units[hundredsCount] + " cents " : "cent ";
-    amount %= 100;
-  }
-
-  if (amount >= 20) {
-    words +=
-      tens[Math.floor(amount / 10)] + (amount % 10 === 0 ? "" : "-") + " ";
-    amount %= 10;
-  }
-
-  if (amount > 0) {
-    words += units[amount] + " ";
-  }
-
-  return words.trim();
-}
-
-
 function demander() {
-  const confirm = window.confirm('Êtes-vous sûr de faire la commande?');
+  const confirm = window.confirm("Êtes-vous sûr de faire la commande?");
   if (!confirm) {
     return;
   }
 
   // Préparer les données à envoyer
   const commandeData = {
-    commandes: proformas.value.map(proforma => ({
+    commandes: proformas.value.map((proforma) => ({
       dateCommande: etatStore.date, // Utilisez la date du store
       produit: proforma.Produit,
       qteCommande: proforma.QteDemande,
@@ -112,25 +46,25 @@ function demander() {
   console.log(commandeData);
   // Envoi des données à l'API
   fetch(`${import.meta.env.VITE_API_URL}/commandes/inserer`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(commandeData), // Envoi du bon format de données
   })
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
-        throw new Error('Erreur lors de l\'envoi de la commande');
+        throw new Error("Erreur lors de l'envoi de la commande");
       }
       return response.json();
     })
-    .then(data => {
+    .then((data) => {
       alert("Commande enregistrée");
       // router.push('/stocdd'); // Redirection après la commande
     })
-    .catch(error => {
-      console.error('Erreur:', error.message);
-      alert('Échec de la commande, veuillez réessayer.');
+    .catch((error) => {
+      console.error("Erreur:", error.message);
+      alert("Échec de la commande, veuillez réessayer.");
     });
 }
 
@@ -185,7 +119,7 @@ onMounted(fetchProformasByDate);
                 proformas
                   .reduce(
                     (total, item) => total + item.QteDemande * item.PrixProduit,
-                    0
+                    0,
                   )
                   .toFixed(1)
               }}
@@ -204,8 +138,8 @@ onMounted(fetchProformasByDate);
             numberToLetterMoney(
               proformas.reduce(
                 (total, item) => total + item.QteDemande * item.PrixProduit,
-                0
-              )
+                0,
+              ),
             )
           }}
         </span>
