@@ -60,7 +60,7 @@ function formatDateToISO(dateStr: string) {
 }
 
 function mapToStringEtat(etatNbr: number) {
-  return etatNbr === 2 ? "Validée" : "En cours";
+  return etatNbr === 1 ? "Livrée" : "En cours";
 }
 
 const showQuestionnaire = async (idCommande, isRefuser, isValider) => {
