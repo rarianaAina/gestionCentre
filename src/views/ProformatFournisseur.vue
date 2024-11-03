@@ -106,6 +106,7 @@ const mapEtatToText = (EtatProformat) => {
   switch (EtatProformat) {
     case 0:
       return "En cours";
+    case -1:
     case 1:
     case 2:
     case 3:

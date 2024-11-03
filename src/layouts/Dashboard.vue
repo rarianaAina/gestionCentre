@@ -15,7 +15,7 @@ const handleLogout = () => {
 };
 
 const routeByRole = {
-  finance: "demandeFinance",
+  finance: "demande-proforma",
   //Chef_de_dep: "demandeChefDep",
   dir_ge: "demandeDir",
   dep_achat: "demande-proforma",
