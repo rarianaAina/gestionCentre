@@ -17,7 +17,7 @@ interface Commande {
 
 const commandes = ref<Commande[]>([]);
 
-const API_URL = 'http://localhost:8082/myStation/api';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const fetchCommandes = async () => {
   try {
@@ -34,13 +34,16 @@ const fetchCommandes = async () => {
 
 // Fonction pour regrouper les commandes par dateCommande
 const groupedCommandes = computed(() => {
-  return commandes.value.reduce((acc, commande) => {
-    const date = commande.dateCommande;
-    if (!acc[date]) {
-      acc[date] = commande.EtatCommande;
-    }
-    return acc;
-  }, {} as Record<string, number>);
+  return commandes.value.reduce(
+    (acc, commande) => {
+      const date = commande.dateCommande;
+      if (!acc[date]) {
+        acc[date] = commande.EtatCommande;
+      }
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 });
 
 const navigateToDate = (dateCommande: string, etat: string) => {
@@ -101,16 +104,13 @@ const handleAction = async (idCommande, isRefuser, isValider) => {
   const action = { dateCommande, isRefuser, isValider, role: userStore.role };
   console.log("Action envoyée:", action);
   try {
-    const response = await fetch(
-      `${API_URL}/commandes/updateEtatFinance`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify([action]),
-      }
-    );
+    const response = await fetch(`${API_URL}/commandes/updateEtatFinance`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify([action]),
+    });
 
     if (!response.ok) {
       throw new Error("Erreur lors du traitement de la demande");
@@ -137,17 +137,38 @@ onMounted(fetchCommandes);
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(EtatCommande, dateCommande) in groupedCommandes" :key="dateCommande">
+        <tr
+          v-for="(EtatCommande, dateCommande) in groupedCommandes"
+          :key="dateCommande"
+        >
           <td class="border px-4 py-2">
             <!-- Lien seulement sur la date -->
-            <a @click.prevent="navigateToDate(formatDateToISO(dateCommande), mapToStringEtat(EtatCommande))" class="text-blue-500 underline cursor-pointer">
+            <a
+              @click.prevent="
+                navigateToDate(
+                  formatDateToISO(dateCommande),
+                  mapToStringEtat(EtatCommande),
+                )
+              "
+              class="text-blue-500 underline cursor-pointer"
+            >
               {{ formatDateToISO(dateCommande) }}
             </a>
           </td>
           <td class="border px-4 py-2">
-            <div v-if="EtatCommande === 1 && (userStore.role === 'finance')">
-              <button @click="showQuestionnaire(dateCommande, false, true)" class="bg-green-500 text-white px-4 py-1 rounded mr-2">Valider</button>
-              <button @click="showQuestionnaire(dateCommande, true, false)" class="bg-red-500 text-white px-4 py-1 rounded">Refuser</button>
+            <div v-if="EtatCommande === 1 && userStore.role === 'finance'">
+              <button
+                @click="showQuestionnaire(dateCommande, false, true)"
+                class="bg-green-500 text-white px-4 py-1 rounded mr-2"
+              >
+                Valider
+              </button>
+              <button
+                @click="showQuestionnaire(dateCommande, true, false)"
+                class="bg-red-500 text-white px-4 py-1 rounded"
+              >
+                Refuser
+              </button>
             </div>
             <div v-else>
               {{ mapToStringEtat(EtatCommande) }}
