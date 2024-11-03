@@ -18,11 +18,6 @@ const items = reactive({
   list: [],
 });
 
-const rariana = reactive({
-  rubrique: "",
-  quantite: 0,
-});
-
 const demandes = ref([{ rubrique: "", quantite: 0 }]);
 
 const addDemande = () => {
@@ -46,13 +41,15 @@ const fetchDemandes = async () => {
     const role = userStore.role; // rôle de l'utilisateur
     console.log(role);
     console.log(
-      `${import.meta.env.VITE_API_URL}/demandes?role=${encodeURIComponent(role)}`,
+      `${import.meta.env.VITE_API_URL}/demandes?role=${encodeURIComponent(
+        role
+      )}`
     );
 
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}/demandes?role=${encodeURIComponent(
-        role,
-      )}`,
+        role
+      )}`
     );
     if (!response.ok) {
       throw new Error("Erreur lors de la récupération des données");
@@ -111,7 +108,7 @@ const handleAction = async (idDemande, isRefuser, isValider) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify([action]),
-      },
+      }
     );
 
     if (!response.ok) {
@@ -129,7 +126,7 @@ const handleAction = async (idDemande, isRefuser, isValider) => {
 const fetchDepartments = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/departements`,
+      `${import.meta.env.VITE_API_URL}/departements`
     );
     if (!response.ok) {
       throw new Error("Erreur lors de la récupération des départements");
@@ -157,13 +154,52 @@ const form = reactive({
   ...initialForm,
 });
 
+// const rariana = reactive({
+//   rubrique: "",
+//   quantite: 0,
+// });
+
+//const demandes = reactive([]); // Tableau réactif pour stocker les demandes
+
 const sendDemand = async () => {
-  const newRariana = {
-    rubrique: rariana.rubrique,
-    quantite: rariana.quantite,
+  const today = new Date();
+  const formattedDate = today.toISOString().split('T')[0];
+
+  // Créer un tableau d'objets pour toutes les demandes
+  const dataAlefa = {
+    proformats: demandes.value.map(demande => ({
+      produit: demande.rubrique,
+      qteDemande: demande.quantite,
+      etatProformat: 0,
+      dateDemande: formattedDate,
+    })),
   };
 
-  console.log("mandeha io e ", newRariana);
+  console.log("mandeha io e ", dataAlefa);
+
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/proformats/inserer`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataAlefa), // Envoyer dataAlefa
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de l'insertion des demandes");
+    }
+
+    const result = await response.json();
+    console.log(result.message);
+    closeModal();
+    demandes.value = [{ rubrique: "", quantite: 0 }];  // Réinitialiser le tableau des demandes
+  } catch (error) {
+    console.error("Erreur:", error.message);
+  }
 };
 
 const handleSubmit = async () => {
@@ -191,7 +227,7 @@ const handleSubmit = async () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(newDemand),
-      },
+      }
     );
 
     if (!response.ok) {
@@ -252,9 +288,7 @@ const closeProfModal = () => {
 <template>
   <div class="container m-auto max-w-4xl overflow-x-auto mt-8">
     <div class="flex flex-wrap justify-between">
-      <div class="max-w-sm mb-8 w-1/2">
-        <Button text="Se déconnecter" @click="handleLogout" />
-      </div>
+
       <div class="max-w-sm mb-8 w-1/2">
         <Button text="Faire une demande de proformat" @click="openProfModal" />
       </div>
@@ -264,12 +298,7 @@ const closeProfModal = () => {
       <div class="max-w-sm mb-8 w-1/2">
         <Button text="Faire une demande" @click="openModal" />
       </div>
-      <div class="max-w-sm mb-8 w-1/2">
-        <Button
-          text="Demandes proformas"
-          @click="$router.push('demande-proforma')"
-        />
-      </div>
+
     </div>
 
     <table class="min-w-full border border-gray-300">
@@ -394,36 +423,36 @@ const closeProfModal = () => {
           <IconButton variant="add" @click="addDemande" />
         </div>
 
-        <form @submit.prevent="submitProformatRequests">
-          <div class="space-y-4">
-            <div
-              v-for="(demande, index) in demandes"
-              :key="index"
-              class="flex items-center space-x-2 py-2"
-            >
-              <InputVariation
-                v-model="rariana.rubrique"
-                name="rubrique"
-                label="Rubrique"
-                class="flex-1"
-              />
-              <InputVariation
-                v-model="rariana.quantite"
-                name="quantite"
-                label="Quantité"
-                type="number"
-                class="flex-1"
-              />
-              <div class="self-end">
-                <IconButton variant="delete" @click="removeDemande(index)" />
-              </div>
-            </div>
-          </div>
-          <div class="flex justify-end mt-4 space-x-5">
-            <Button text="Annuler" variant="neutral" @click="closeProfModal" />
-            <Button text="Soumettre" type="submit" @click="sendDemand" />
-          </div>
-        </form>
+        <form @submit.prevent="sendDemand">
+    <div class="space-y-4">
+      <div
+        v-for="(demande, index) in demandes"
+        :key="index"
+        class="flex items-center space-x-2 py-2"
+      >
+        <InputVariation
+          v-model="demande.rubrique"
+          name="rubrique"
+          label="Rubrique"
+          class="flex-1"
+        />
+        <InputVariation
+          v-model="demande.quantite"
+          name="quantite"
+          label="Quantité"
+          type="number"
+          class="flex-1"
+        />
+        <div class="self-end">
+          <IconButton variant="delete" @click="removeDemande(index)" />
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-end mt-4 space-x-5">
+      <Button text="Annuler" variant="neutral" @click="closeProfModal" />
+      <Button text="Soumettre" type="submit" />
+    </div>
+  </form>
       </div>
     </div>
   </div>

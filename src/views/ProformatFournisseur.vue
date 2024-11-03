@@ -48,17 +48,18 @@ const form = reactive({
 
 const handleSubmit = async () => {
   const demandes = items.list.map((item) => {
-    const prixSaisi = parseFloat(
-      document.getElementById(`prix-${item.idProformat}`).value
-    ); // Convertir en nombre
+    // Vérifier si l'input existe pour cet élément
+    const inputElement = document.getElementById(`prix-${item.idProformat}`);
+    const prixSaisi = inputElement ? parseFloat(inputElement.value) : item.PrixProduit;
+
     return {
-      role: userStore.role, // Ajout de la propriété role
+      role: userStore.role,
       idProformat: item.idProformat,
       prixProduit: prixSaisi,
     };
   });
 
-  const newDemand = demandes; // Pas besoin d'un objet englobant "demandes"
+  const newDemand = demandes;
 
   console.log("New Demand:", newDemand);
   console.log(userStore.idEmployee);
@@ -71,7 +72,7 @@ const handleSubmit = async () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newDemand), // Utiliser newDemand directement
+        body: JSON.stringify(newDemand),
       }
     );
 
@@ -87,7 +88,6 @@ const handleSubmit = async () => {
     console.error("Erreur:", error.message);
   }
 };
-
 const isModalOpen = ref(false);
 
 const openModal = () => {
@@ -107,15 +107,15 @@ const mapEtatToText = (EtatProformat) => {
     case 0:
       return "En cours";
     case 1:
+    case 2:
+    case 3:
       return "Repondue";
   }
 };
 </script>
 
 <template>
-  <div class="max-w-sm mb-8 w-1/2">
-    <Button text="Se déconnecter" @click="handleLogout" />
-  </div>
+
   <table class="min-w-full border border-gray-300">
     <thead>
       <tr class="bg-gray-200">
@@ -128,13 +128,15 @@ const mapEtatToText = (EtatProformat) => {
     </thead>
     <tbody>
       <tr v-for="(item, index) in items.list" :key="index">
-        <td class="border border-gray-300 px-4 py-2"> {{ mapEtatToText(item.EtatProformat) }}</td>
-        
+        <td class="border border-gray-300 px-4 py-2">
+          {{ mapEtatToText(item.EtatProformat) }}
+        </td>
+
         <td class="border border-gray-300 px-4 py-2">{{ item.dateDemande }}</td>
         <td class="border border-gray-300 px-4 py-2">{{ item.Produit }}</td>
         <td class="border border-gray-300 px-4 py-2">{{ item.QteDemande }}</td>
         <td class="border border-gray-300 px-4 py-2">
-          <template v-if="item.PrixProduit !== null">
+          <template v-if="Number(item.PrixProduit) !== 0">
             {{ item.PrixProduit }}
             <!-- Affiche le prix s'il n'est pas nul -->
           </template>

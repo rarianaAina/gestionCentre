@@ -1,6 +1,35 @@
 <script setup lang="ts">
 import NavButton from "@/components/NavButton.vue";
 import Header from "./Header.vue";
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/userStore";
+
+
+const router = useRouter();
+const userStore = useUserStore();
+console.log(userStore.idEmployee);
+
+const handleLogout = () => {
+  userStore.logout(); // Appeler la méthode de déconnexion dans le store
+  router.push("/signin"); // Rediriger vers la page de connexion
+};
+
+const routeByRole = {
+  finance: "demandeFinance",
+  //Chef_de_dep: "demandeChefDep",
+  dir_ge: "demandeDir",
+  dep_achat: "demande-proforma",
+  fournisseur: "proformatFournisseur",
+};
+
+const routeByRoleDemande = {
+  finance: "demandeFinance",
+  Chef_de_dep: "demandeChefDep",
+  dir_ge: "demandeDir",
+  dep_achat: "demande",
+  //fournisseur: "proformatFournisseur",
+}
+
 </script>
 
 <template>
@@ -10,14 +39,17 @@ import Header from "./Header.vue";
     <!-- Core section -->
     <div class="core flex-grow flex gap-x-3">
       <div class="navigation flex flex-col pl-5">
-        <div class="nav my-2">
-          <NavButton text="Demande" />
+        <div class="nav my-2 w-full">
+          <NavButton text="Demandes de proforma" @click="$router.push(`/${routeByRole[userStore.role]}`)" class="w-full" />
         </div>
-        <div class="nav my-2">
-          <NavButton text="Proformat" />
+        <div class="nav my-2 w-full">
+          <NavButton text="Commandes" @click="$router.push(`/commandesFournisseur`)" class="w-full" />
+        </div>
+        <div class="nav my-2 w-full">
+          <NavButton text="Demandes" @click="$router.push(`/${routeByRoleDemande[userStore.role]}`)" class="w-full" />
         </div>
         <div class="nav my-2 mt-auto">
-          <NavButton text="Deconnexion" icon="pi pi-sign-out" />
+          <NavButton text="Deconnexion" icon="pi pi-sign-out" @click="handleLogout" />
         </div>
       </div>
 

@@ -15,6 +15,7 @@ import DashboardLayout from "@/layouts/Dashboard.vue";
 import ProformatFournisseur from "@/views/ProformatFournisseur.vue";
 import TsyKoboko from "@/views/DemandeProformaView.vue";
 import DemandeProformaView from "@/views/DemandeProformaView.vue";
+import CommandesFournisseur from "@/views/CommandesFournisseur.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -92,6 +93,11 @@ const router = createRouter({
           path: "demande-proforma",
           name: "Demande ProformaView",
           component: DemandeProformaView,
+        },
+        {
+          path: "commandesFournisseur",
+          name: "Commandes Fournisseur",
+          component: CommandesFournisseur,
         },
       ],
     },
