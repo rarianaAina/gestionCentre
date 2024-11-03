@@ -53,11 +53,6 @@ const filteredStocks = computed(() => {
   <h1 class="text-4xl mb-3">Liste des stocks</h1>
 
   <div class="container mt-5">
-    <Button
-      text="Mes demandes"
-      @click="$router.push(`/${routeByRole[userStore.role]}`)"
-    />
-
     <!-- Champ de recherche -->
     <div class="mb-3">
       <input
