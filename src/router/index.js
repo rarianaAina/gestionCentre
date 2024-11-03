@@ -65,7 +65,7 @@ const router = createRouter({
           component: ProformatView,
         },
         {
-          path: "bon-de-commande",
+          path: "bon-de-commande/:date",
           name: "bon-de-commande",
           component: BonDeCommandeView,
         },
