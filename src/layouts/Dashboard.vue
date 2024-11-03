@@ -28,6 +28,13 @@ const routeByRoleDemande = {
   dir_ge: "demandeDir",
   dep_achat: "demande",
   //fournisseur: "proformatFournisseur",
+};
+
+const routeByRoleCommande = {
+  finance: "commandeView",
+  dir_ge: "commandeView",
+  dep_achat: "commandeView",
+  fournisseur: "commandesFournisseur",
 }
 
 </script>
@@ -43,7 +50,7 @@ const routeByRoleDemande = {
           <NavButton text="Proformas" @click="$router.push(`/${routeByRole[userStore.role]}`)" class="w-full" />
         </div>
         <div class="nav my-2 w-full">
-          <NavButton text="Commandes" @click="$router.push(`/commandesFournisseur`)" class="w-full" />
+          <NavButton text="Commandes" @click="$router.push(`/${routeByRoleCommande[userStore.role]}`)" class="w-full" />
         </div>
         <div class="nav my-2 w-full">
           <NavButton text="Demandes" @click="$router.push(`/${routeByRoleDemande[userStore.role]}`)" class="w-full" />
@@ -51,6 +58,7 @@ const routeByRoleDemande = {
         <div class="nav my-2 mt-auto">
           <NavButton text="Deconnexion" icon="pi pi-sign-out" @click="handleLogout" />
         </div>
+        
       </div>
 
       <div class="view flex-grow bg-gray-100 p-3 overflow-y-auto">
