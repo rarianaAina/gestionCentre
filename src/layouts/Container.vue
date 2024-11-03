@@ -6,5 +6,6 @@
 <style scoped>
 .container {
   height: calc(100vh - 25vh);
+  overflow-y: auto;
 }
 </style>
