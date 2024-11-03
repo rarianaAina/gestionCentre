@@ -4,9 +4,11 @@ import Title from "@/components/Title.vue";
 import Container from "@/layouts/Container.vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/userStore";
+import { useEtatProforma } from "@/stores/etatProforma";
 
 const router = useRouter();
 const userStore = useUserStore();
+const etatProformat = useEtatProforma();
 
 interface Proformat {
   dateDemande: string;
@@ -41,7 +43,8 @@ const groupedProformas = computed(() => {
   }, {} as Record<string, number>);
 });
 
-const navigateToDate = (dateDemande: string) => {
+const navigateToDate = (dateDemande: string, etat: string) => {
+  etatProformat.setProformaState(dateDemande, etat)
   router.push(`/proformat/${dateDemande}`);
 };
 
@@ -53,6 +56,9 @@ function formatDateToISO(dateStr: string) {
   return `${year}-${month}-${day}`;
 }
 
+function mapToStringEtat(etatNbr: number) {
+  return etatNbr === 2 ? "Validée" : "En cours"
+}
 
 const showQuestionnaire = async (idProformat, isRefuser, isValider) => {
   let questions;
@@ -134,17 +140,17 @@ onMounted(fetchProformas);
         <tr v-for="(EtatProformat, dateProformat) in groupedProformas" :key="dateProformat">
           <td class="border px-4 py-2">
             <!-- Lien seulement sur la date -->
-            <a @click.prevent="navigateToDate(formatDateToISO(dateProformat))" class="text-blue-500 underline cursor-pointer">
+            <a @click.prevent="navigateToDate(formatDateToISO(dateProformat), mapToStringEtat(EtatProformat))" class="text-blue-500 underline cursor-pointer">
               {{ formatDateToISO(dateProformat) }}
             </a>
           </td>
           <td class="border px-4 py-2">
-            <div v-if="EtatProformat === 1">
+            <div v-if="EtatProformat === 1 && (userStore.role === 'finance')">
               <button @click="showQuestionnaire(dateProformat, false, true)" class="bg-green-500 text-white px-4 py-1 rounded mr-2">Valider</button>
               <button @click="showQuestionnaire(dateProformat, true, false)" class="bg-red-500 text-white px-4 py-1 rounded">Refuser</button>
             </div>
             <div v-else>
-              {{ EtatProformat === 2 ? "Validée" : "Refusée" }}
+              {{ mapToStringEtat(EtatProformat) }}
             </div>
           </td>
         </tr>

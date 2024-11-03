@@ -1,12 +1,16 @@
-<script setup lang="ts">
+<script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import Title from "@/components/Title.vue";
 import Container from "@/layouts/Container.vue";
+import Button from "@/components/Button.vue";
+import { useEtatProforma } from "@/stores/etatProforma";
+import { useRouter } from "vue-router";
 
 const route = useRoute();
 const proformas = ref([]); // Pour stocker les données récupérées
 const date = computed(() => route.params.date);
+const etatStore = useEtatProforma();
 
 const API_URL = "http://localhost:8082/myStation/api/proformats/date"; // URL de l'API pour les proformas par date
 
@@ -90,6 +94,46 @@ function convertHundreds(amount) {
   return words.trim();
 }
 
+
+function demander() {
+  const confirm = window.confirm('Êtes-vous sûr de faire la commande?');
+  if (!confirm) {
+    return;
+  }
+
+  // Préparer les données à envoyer
+  const commandeData = {
+    commandes: proformas.value.map(proforma => ({
+      dateCommande: etatStore.date, // Utilisez la date du store
+      produit: proforma.Produit,
+      qteCommande: proforma.QteDemande,
+    })),
+  };
+  console.log(commandeData);
+  // Envoi des données à l'API
+  fetch(`${import.meta.env.VITE_API_URL}/commandes/inserer`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(commandeData), // Envoi du bon format de données
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erreur lors de l\'envoi de la commande');
+      }
+      return response.json();
+    })
+    .then(data => {
+      alert("Commande enregistrée");
+      // router.push('/stocdd'); // Redirection après la commande
+    })
+    .catch(error => {
+      console.error('Erreur:', error.message);
+      alert('Échec de la commande, veuillez réessayer.');
+    });
+}
+
 // Récupérer les proformas lors du montage du composant
 onMounted(fetchProformasByDate);
 </script>
@@ -102,7 +146,10 @@ onMounted(fetchProformasByDate);
         <div>
           <Title text="Fournisseurs COMPTA" />
           <span
-            >Date: <span class="text-xl font-semibold">{{ date }}</span></span
+            >Date:
+            <span class="text-xl font-semibold">{{
+              etatStore.date
+            }}</span></span
           >
         </div>
       </div>
@@ -155,10 +202,29 @@ onMounted(fetchProformasByDate);
         <span class="text-xl font-semibold text-gray-800">
           {{
             numberToLetterMoney(
-              proformas.reduce((total, item) => total + item.QteDemande * item.PrixProduit, 0)
+              proformas.reduce(
+                (total, item) => total + item.QteDemande * item.PrixProduit,
+                0
+              )
             )
           }}
         </span>
+      </div>
+    </div>
+    <div class="flex justify-between px-5 mt-6">
+      <div class="max-w-sm mb-8 w-1/2">
+        <Button
+          text="Retour"
+          variant="neutral"
+          @click="$router.push('/demande-proforma')"
+        />
+      </div>
+      <div class="max-w-sm mb-8 w-1/2">
+        <Button
+          v-if="etatStore.etat === 'Validée'"
+          text="Commander"
+          @click="demander"
+        />
       </div>
     </div>
   </Container>

@@ -40,7 +40,7 @@ const routeByRoleDemande = {
     <div class="core flex-grow flex gap-x-3">
       <div class="navigation flex flex-col pl-5">
         <div class="nav my-2 w-full">
-          <NavButton text="Demandes de proforma" @click="$router.push(`/${routeByRole[userStore.role]}`)" class="w-full" />
+          <NavButton text="Proformas" @click="$router.push(`/${routeByRole[userStore.role]}`)" class="w-full" />
         </div>
         <div class="nav my-2 w-full">
           <NavButton text="Commandes" @click="$router.push(`/commandesFournisseur`)" class="w-full" />
